@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct trekker_app_iosApp: App {
+    @StateObject var locations = Locations()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabView {
+                NavigationView {
+                    ContentView(primaryLocation: locations.primary)
+                }
+            }
         }
     }
 }
