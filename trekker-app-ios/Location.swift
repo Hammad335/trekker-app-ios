@@ -5,7 +5,7 @@
 //  Created by Hamad on 04/12/2024.
 //
 
-struct Location: Decodable {
+struct Location: Decodable, Identifiable {
     let id: Int
     let name: String
     let country: String

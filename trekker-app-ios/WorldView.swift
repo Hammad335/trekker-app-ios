@@ -9,14 +9,35 @@ import MapKit
 import SwiftUI
 
 struct WorldView: View {
-    @State var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 38.8951, longitude: -77.0364),
-        span: .init(latitudeDelta: 20, longitudeDelta: 20)
-    )
+    @EnvironmentObject var locations: Locations
+
+    @State var region =
+        MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 38.8951, longitude: -77.0364),
+            span: .init(latitudeDelta: 40, longitudeDelta: 40))
 
     var body: some View {
-        Map(coordinateRegion: $region, showsUserLocation: true)
-            .edgesIgnoringSafeArea(.top)
+        Map(coordinateRegion: $region,
+            annotationItems: locations.places,
+            annotationContent: { location in
+
+                MapAnnotation(
+                    coordinate: CLLocationCoordinate2D(
+                        latitude: location.latitude,
+                        longitude: location.longitude))
+                {
+                    NavigationLink(
+                        destination: ContentView(primaryLocation: location))
+                    {
+                        Image(location.country)
+                            .resizable()
+                            .cornerRadius(10)
+                            .frame(width: 80, height: 40)
+                            .shadow(radius: 30)
+                    }
+                }
+
+            })
     }
 }
 
